@@ -9,12 +9,18 @@ public class MainWindow {
     private final JFrame frame;
 
     private final JLabel messageLabel;
+    
+    private final JLabel nextLabel;
 
     private final JButton rockButton;
 
     private final JButton scissorsButton;
 
     private final JButton paperButton;
+    
+    private final JButton nextButton;
+
+    private final JButton endButton;
 
     private Status playState;
 
@@ -23,7 +29,7 @@ public class MainWindow {
     public MainWindow() {
         this.frame = new JFrame("いんじゃんほい！");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setBounds(200, 200, 600, 400);
+        this.frame.setBounds(1000, 200, 600, 400);
 
         var pane = this.frame.getContentPane();
 
@@ -34,6 +40,10 @@ public class MainWindow {
         this.messageLabel = new JLabel("いんじゃん・・・");
         this.messageLabel.setBounds(20, 20, 400, 30);
         canvas.add(this.messageLabel);
+        this.nextLabel = new JLabel();
+        this.nextLabel.setBounds(250, 215, 100, 30);
+        canvas.add(this.nextLabel);
+
         
         //-----------------    
         // ボタンを作成する
@@ -55,6 +65,14 @@ public class MainWindow {
         this.paperButton.setBounds(400, 100, 100, 40);
         this.paperButton.addActionListener((e) -> this.selectHand(Hands.Paper));
         canvas.add(this.paperButton);
+
+        this.nextButton = new JButton("Go next");
+        
+        canvas.add(this.nextButton);
+
+        this.endButton = new JButton("End");
+        
+        canvas.add(this.endButton);
 
         pane.add(canvas);
     }
@@ -87,12 +105,18 @@ public class MainWindow {
                 ("相手が出したのは「%s」なのであなたの負けです。", 
                 this.opponentHand.getDisplay()));
                 this.playState = Status.Done;
+                this.nextButton.setBounds(180, 250, 100, 40);
+                this.endButton.setBounds(325, 250, 100, 40);
+                this.nextLabel.setText(String.format("one more game?"));
                 break;
             case 2:
                 this.messageLabel.setText(String.format
                 ("相手が出したのは「%s」なのであなたの勝ちです。", 
                 this.opponentHand.getDisplay()));
                 this.playState = Status.Done;
+                this.nextButton.setBounds(180, 250, 100, 40);
+                this.endButton.setBounds(325, 250, 100, 40);
+                this.nextLabel.setText(String.format("one more game?"));
                 break;
         }
 
