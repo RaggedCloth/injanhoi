@@ -3,6 +3,7 @@ import enums.Hands;
 import enums.Status;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainWindow {
     
@@ -26,6 +27,7 @@ public class MainWindow {
 
     private Hands opponentHand;
 
+
     public MainWindow() {
         this.frame = new JFrame("いんじゃんほい！");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +40,8 @@ public class MainWindow {
         canvas.setLayout(null);
 
         this.messageLabel = new JLabel("いんじゃん・・・");
-        this.messageLabel.setBounds(20, 20, 400, 30);
+        this.messageLabel.setBounds(100, 20, 400, 30);
+        this.messageLabel.setHorizontalAlignment(JLabel.CENTER);
         canvas.add(this.messageLabel);
         this.nextLabel = new JLabel();
         this.nextLabel.setBounds(250, 215, 100, 30);
@@ -63,16 +66,24 @@ public class MainWindow {
 
         this.paperButton = new JButton(Hands.Paper.getDisplay());
         this.paperButton.setBounds(400, 100, 100, 40);
-        this.paperButton.addActionListener((e) -> this.selectHand(Hands.Paper));
+        this.paperButton.addActionListener
+        ((e) -> this.selectHand(Hands.Paper));
         canvas.add(this.paperButton);
 
+        this.endButton = new JButton("End");
+        this.endButton.addActionListener((e) -> frame.dispose());
+        canvas.add(this.endButton);
+
         this.nextButton = new JButton("Go next");
-        
+        this.nextButton.addActionListener(e -> {
+            this.init();
+            this.messageLabel.setText("いんじゃん・・・");
+            this.nextButton.setVisible(false);
+            this.endButton.setVisible(false);
+            this.nextLabel.setVisible(false);
+        });
         canvas.add(this.nextButton);
 
-        this.endButton = new JButton("End");
-        
-        canvas.add(this.endButton);
 
         pane.add(canvas);
     }
@@ -105,6 +116,9 @@ public class MainWindow {
                 ("相手が出したのは「%s」なのであなたの負けです。", 
                 this.opponentHand.getDisplay()));
                 this.playState = Status.Done;
+                this.nextButton.setVisible(true);
+                this.endButton.setVisible(true);
+                this.nextLabel.setVisible(true);
                 this.nextButton.setBounds(180, 250, 100, 40);
                 this.endButton.setBounds(325, 250, 100, 40);
                 this.nextLabel.setText(String.format("one more game?"));
@@ -114,6 +128,9 @@ public class MainWindow {
                 ("相手が出したのは「%s」なのであなたの勝ちです。", 
                 this.opponentHand.getDisplay()));
                 this.playState = Status.Done;
+                this.nextButton.setVisible(true);
+                this.endButton.setVisible(true);
+                this.nextLabel.setVisible(true);
                 this.nextButton.setBounds(180, 250, 100, 40);
                 this.endButton.setBounds(325, 250, 100, 40);
                 this.nextLabel.setText(String.format("one more game?"));
